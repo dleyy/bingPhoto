@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="ViewModel"
+            type="com.dleyy.bingphoto.viewmodel.HomeFragmentViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fresco="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--  fresco:actualImageScaleType：实际加载的图片的伸缩样式
+        fresco:backgroundImage：底层图片资源
+        fresco:fadeDuration：进度条和占位符图片逐渐消失、加载的图片逐渐显示的时间间隔
+        fresco:failureImage：加载失败时显示的图片资源
+        fresco:failureImageScaleType：加载失败时加载的图片的伸缩样式
+        fresco:overlayImage：在显示的图片表层覆盖一张图片的图片资源
+        fresco:placeholderImage：占位符图片资源
+        fresco:placeholderImageScaleType：占位符图片的伸缩样式
+        fresco:progressBarAutoRotateInterval：进度条图片转动周期
+        fresco:progressBarImage：进度条图片资源
+        fresco:progressBarImageScaleType：进度条图片的伸缩样式
+        fresco:retryImage：提示重新加载的图片资源
+        fresco:retryImageScaleType：提示重新加载的图片的伸缩样式
+        fresco:roundAsCircle：将图片剪切成圆形
+        fresco:viewAspectRatio：图片宽高比-->
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/bingPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_image_height"
+            fresco:failureImage="@drawable/ic_load_img_fail"
+            fresco:progressBarImage="@drawable/icon_progress_bar"
+            fresco:progressBarImageScaleType="centerInside"
+            fresco:progressBarAutoRotateInterval="5000"
+            fresco:placeholderImage="@drawable/none_image" />
+
+    </LinearLayout>
+</layout>

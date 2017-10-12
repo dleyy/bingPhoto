@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="ViewModel"
+            type="com.dleyy.bingphoto.viewmodel.ImageActivityViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/image_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+    </RelativeLayout>
+</layout>

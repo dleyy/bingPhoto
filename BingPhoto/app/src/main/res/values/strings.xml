@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Window</string>
+    <string name="view_error_txt">出错啦~</string>
+    <string name="view_empty_txt">暂无数据~</string>
+    <string name="view_more_txt">加载中......</string>
+    <string name="view_nomore_txt">没有更多了!~</string>
+
+    <string name="download">下载</string>
+    <string name="down_load_error_message">创建目录失败</string>
+</resources>
