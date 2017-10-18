@@ -16,4 +16,5 @@
     <dimen name="download_button_margin_bottom">24dp</dimen>
 
     <dimen name="notification_height">40dp</dimen>
+    <dimen name="notification_textSize">18sp</dimen>
 </resources>

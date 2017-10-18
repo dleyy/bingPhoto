@@ -73,7 +73,7 @@ public class DownLoadImageService extends IntentService {
             }
         }
     }
-    
+
     public void downLoadBingImage(final String url, final String path) {
         OkHttpClient client = ProgressManager.getInstance()
                 .with(new OkHttpClient.Builder()).build();
@@ -81,13 +81,18 @@ public class DownLoadImageService extends IntentService {
                 .url(url)
                 .build();
         notificationUtil.showNotification(ID_NOTIFICATION_ID);
+
         ProgressManager.getInstance().addRequestListener(url, new ProgressListener() {
             @Override
             public void onProgress(ProgressInfo progressInfo) {
-                long currentPercent = progressInfo.getCurrentbytes() / progressInfo.getContentLength();
-                int nowProgress = Integer.parseInt(currentPercent + "");
+                int progress = progressInfo.getPercent();
                 notificationUtil.changeNotificationProgress(
-                        ID_NOTIFICATION_ID, nowProgress);
+                        ID_NOTIFICATION_ID, progress);
+                if (progressInfo.isFinish()) {
+                    notificationUtil.cancleNotification(ID_NOTIFICATION_ID);
+                    notificationUtil.showFinishedNotification();
+                }
+
             }
 
             @Override

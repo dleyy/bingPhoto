@@ -5,8 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -23,6 +21,7 @@ import java.util.Map;
 public class NotificationUtil {
 
     private int FLAG_PENDINGINTENT = 0;
+    private static int FINISHED_NOTIFICATION_ID = 1000;
 
     private Context context;
     private Map<Integer, Notification> map = null;
@@ -46,6 +45,7 @@ public class NotificationUtil {
 //            notification.contentIntent = pendingIntent;
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.notification_view);
+            remoteViews.setOnClickPendingIntent(R.layout.notification_view, pendingIntent);
             notification.contentView = remoteViews;
             notification.icon = R.drawable.ic_bck;
             manager.notify(notificationId, notification);
@@ -70,12 +70,21 @@ public class NotificationUtil {
      * @param progress
      */
     public void changeNotificationProgress(int notificationID, int progress) {
-        Log.e("DDDD", "changeNotificationProgress: "+notificationID+"  "+progress );
+        Log.e("DDDD", "changeNotificationProgress: " + notificationID + "  " + progress);
         Notification notification = map.get(notificationID);
         if (null != notification) {
             notification.contentView.setProgressBar(R.id.progress_bar, 100, progress, false);
             manager.notify(notificationID, notification);
         }
+    }
+
+    public void showFinishedNotification() {
+        Notification notification = new Notification();
+        RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.notification_finish);
+        notification.contentView = view;
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        manager.notify(FINISHED_NOTIFICATION_ID, notification);
+        map.put(FINISHED_NOTIFICATION_ID, notification);
     }
 
 

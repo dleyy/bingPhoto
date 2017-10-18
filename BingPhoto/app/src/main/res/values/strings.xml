@@ -9,4 +9,5 @@
     <string name="down_load_error_message">创建目录失败</string>
 
     <string name="download_image">下载中...</string>
+    <string name="download_finished">下载完成</string>
 </resources>
