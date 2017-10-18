@@ -2,11 +2,11 @@ package com.dleyy.bingphoto.Utils;
 
 import android.content.Context;
 import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.dleyy.bingphoto.R;
+import com.dleyy.bingphoto.view.serverce.DownLoadImageService;
 import com.dleyy.data.request.DownLoadImageRequest;
 
 import org.json.JSONException;
@@ -29,6 +29,12 @@ public class AboutData {
         return aboutData;
     }
 
+    /**
+     * 获取ShowApi返回的结果
+     *
+     * @param s
+     * @return
+     */
     public String getList(String s) {
         String list = null;
         try {
@@ -61,10 +67,10 @@ public class AboutData {
     public void downLoadImages(String url, String imageName, Context context) {
         String imageRoot = creatImagePath();
         if (!imageRoot.equals(null)) {
-            String path = imageRoot + "/" + imageName + ".png";
-            downLoadImageRequest.downLoadImage(context,url, path);
+            String path = imageRoot + "/" + "1997-07-08" + imageName.substring(0, 3) + ".png";
+            DownLoadImageService.downloadImage(context, path, url);
         } else {
-            Toast.makeText(context,context.getString(R.string.down_load_error_message), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.down_load_error_message), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -116,7 +122,12 @@ public class AboutData {
      * @return
      */
     public static String creatImagePath() {
-        return createFileDir("outWindow/Image");
+        String downloadPath = createFileDir("Window");
+        File path = new File(downloadPath);
+        if (path.exists()) {
+            return downloadPath;
+        }
+        return null;
     }
 
 }

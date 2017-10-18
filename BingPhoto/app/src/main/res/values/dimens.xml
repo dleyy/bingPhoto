@@ -14,4 +14,6 @@
 
     <dimen name="title_bar_txt_size">15sp</dimen>
     <dimen name="download_button_margin_bottom">24dp</dimen>
+
+    <dimen name="notification_height">40dp</dimen>
 </resources>

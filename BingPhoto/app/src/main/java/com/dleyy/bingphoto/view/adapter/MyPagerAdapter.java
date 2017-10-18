@@ -1,5 +1,6 @@
 package com.dleyy.bingphoto.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -39,6 +40,7 @@ public class MyPagerAdapter extends PagerAdapter {
         for (int i = 0; i < list.size(); i++) {
             SimpleDraweeView imageView;
             TextView title;
+            ImageView back;
             final TextView content;
             Button download;
             View v = LayoutInflater.from(context).inflate(R.layout.item_image, null, false);
@@ -47,7 +49,14 @@ public class MyPagerAdapter extends PagerAdapter {
             imageView = (SimpleDraweeView) v.findViewById(R.id.item_image);
             title = (TextView) v.findViewById(R.id.title);
             content = (TextView) v.findViewById(R.id.image_info_content);
+            back = (ImageView) v.findViewById(R.id.back_btn);
 
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((Activity) context).finish();
+                }
+            });
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             imageView.setImageURI(list.get(i).getImageUrl());
             title.setText((i + 1) + "/" + list.size());

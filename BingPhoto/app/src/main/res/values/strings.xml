@@ -7,4 +7,6 @@
 
     <string name="download">下载</string>
     <string name="down_load_error_message">创建目录失败</string>
+
+    <string name="download_image">下载中...</string>
 </resources>
