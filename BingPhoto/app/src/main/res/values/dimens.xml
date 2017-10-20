@@ -17,4 +17,6 @@
 
     <dimen name="notification_height">40dp</dimen>
     <dimen name="notification_textSize">18sp</dimen>
+
+    <dimen name="sector_height">300dp</dimen>
 </resources>

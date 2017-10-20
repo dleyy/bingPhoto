@@ -118,6 +118,7 @@ public class DownLoadImageService extends IntentService {
                     fileOutputStream.write(buffer, 0, length);
                 }
                 fileOutputStream.flush();
+                notificationUtil.showFinishedNotification();
             }
         });
 
