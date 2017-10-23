@@ -82,17 +82,12 @@ public class DownLoadImageService extends IntentService {
                 .build();
         notificationUtil.showNotification(ID_NOTIFICATION_ID);
 
-        ProgressManager.getInstance().addRequestListener(url, new ProgressListener() {
+        ProgressManager.getInstance().addResponseListener(url, new ProgressListener() {
             @Override
             public void onProgress(ProgressInfo progressInfo) {
                 int progress = progressInfo.getPercent();
                 notificationUtil.changeNotificationProgress(
                         ID_NOTIFICATION_ID, progress);
-                if (progressInfo.isFinish()) {
-                    notificationUtil.cancleNotification(ID_NOTIFICATION_ID);
-                    notificationUtil.showFinishedNotification();
-                }
-
             }
 
             @Override
@@ -100,6 +95,7 @@ public class DownLoadImageService extends IntentService {
                 notificationUtil.cancleNotification(ID_NOTIFICATION_ID);
             }
         });
+
         client.newCall(request).enqueue(new Callback() {
 
             @Override
@@ -118,7 +114,6 @@ public class DownLoadImageService extends IntentService {
                     fileOutputStream.write(buffer, 0, length);
                 }
                 fileOutputStream.flush();
-                notificationUtil.showFinishedNotification();
             }
         });
 

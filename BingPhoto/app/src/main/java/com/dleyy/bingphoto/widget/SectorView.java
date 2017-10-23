@@ -27,29 +27,8 @@ public class SectorView extends View {
     private Paint mpaint;
     private int width, height;
 
-    public SectorView(Context context) {
-        super(context);
-        Log.e(TAG, "SectorView:+context");
-    }
-
     public SectorView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.e(TAG, "SectorView:+context、attrs");
-    }
-
-    public SectorView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        Log.e(TAG, "SectorView:+context、attrs、defStyleAttr");
-    }
-
-    public SectorView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        Log.e(TAG, "SectorView:+context。。。。4个参数");
-    }
-
-    public SectorView(Context context, List<SectorBean> mDatas) {
-        this(context, null, mDatas);
-        Log.e(TAG, "SectorView:+context、、datas+两个参数");
     }
 
     public SectorView(Context context, AttributeSet attrs, List<SectorBean> mDatas) {
@@ -57,14 +36,11 @@ public class SectorView extends View {
         this.mDatas = mDatas;
         calculateAngle(mDatas);
         initPaint();
-        Log.e(TAG, "SectorView:+context、、datas+3个参数");
     }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.e(TAG, "onMeasure: ");
     }
 
     @Override
@@ -72,19 +48,16 @@ public class SectorView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         width = w;
         height = h;
-        Log.e(TAG, "onSizeChanged: ");
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        Log.e(TAG, "onLayout: ");
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.e(TAG, "onDraw: ");
         if (null == mDatas) {
             return;
         }
@@ -113,6 +86,10 @@ public class SectorView extends View {
 
     /**
      * 计算并设置角度
+     * 根据百分比来计算所占的角度，同时更新开始的角度
+     * 由于坐标是 下右为正，所以绘制的时候是从
+     * 右下->左下->左上->右上
+     * 开始的。
      *
      * @param mDatas
      */

@@ -5,6 +5,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -19,6 +22,8 @@ import java.util.Map;
  * Created by dleyy on 2017/10/18.
  */
 public class NotificationUtil {
+
+    private static final String TAG = "NotificationUtil";
 
     private int FLAG_PENDINGINTENT = 0;
     private static int FINISHED_NOTIFICATION_ID = 1000;
@@ -42,9 +47,11 @@ public class NotificationUtil {
             Intent intent = new Intent(context, DownloadListActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     context, 0, intent, FLAG_PENDINGINTENT);
-//            notification.contentIntent = pendingIntent;
+            notification.contentIntent = pendingIntent;
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.notification_view);
+            remoteViews.setImageViewResource(R.id.download_image, R.drawable.download);
+            remoteViews.setProgressBar(R.id.progress_bar, 100, 0, false);
             remoteViews.setOnClickPendingIntent(R.layout.notification_view, pendingIntent);
             notification.contentView = remoteViews;
             notification.icon = R.drawable.ic_bck;
@@ -69,23 +76,19 @@ public class NotificationUtil {
      * @param notificationID
      * @param progress
      */
-    public void changeNotificationProgress(int notificationID, int progress) {
+    public synchronized void changeNotificationProgress(int notificationID, int progress) {
         Log.e("DDDD", "changeNotificationProgress: " + notificationID + "  " + progress);
         Notification notification = map.get(notificationID);
         if (null != notification) {
             notification.contentView.setProgressBar(R.id.progress_bar, 100, progress, false);
             manager.notify(notificationID, notification);
+            if (progress == 100) {
+                notification.contentView.setImageViewResource(R.id.download_image, R.drawable.downloaded);
+                notification.contentView.setTextViewText(R.id.download_title, "下载完成");
+            }
+        } else {
+            throw new RuntimeException("for notificationID" + notification + " didn't exit");
         }
     }
-
-    public void showFinishedNotification() {
-        Notification notification = new Notification();
-        RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.notification_finish);
-        notification.contentView = view;
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-        manager.notify(FINISHED_NOTIFICATION_ID, notification);
-        map.put(FINISHED_NOTIFICATION_ID, notification);
-    }
-
 
 }
