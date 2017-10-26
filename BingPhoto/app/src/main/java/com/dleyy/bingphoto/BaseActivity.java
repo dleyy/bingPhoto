@@ -1,11 +1,13 @@
 package com.dleyy.bingphoto;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.MessageQueue;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.widget.GridLayout;
 
 import com.dleyy.bingphoto.Bean.PhonePixel;
 import com.facebook.drawee.backends.pipeline.Fresco;

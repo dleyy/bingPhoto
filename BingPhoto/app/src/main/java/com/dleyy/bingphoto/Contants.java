@@ -19,4 +19,6 @@ public class Contants {
      * 必应图片数据
      */
     public static final String KEY_BING_LIST = "key_bing_list";
+
+
 }

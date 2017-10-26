@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.dleyy.bingphoto.R;
 import com.dleyy.bingphoto.view.serverce.DownLoadImageService;
-import com.dleyy.data.request.DownLoadImageRequest;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +20,6 @@ import java.io.File;
 public class AboutData {
     private String TAG = "AboutData";
     private static AboutData aboutData;
-    private DownLoadImageRequest downLoadImageRequest = new DownLoadImageRequest();
 
     public static AboutData getInstance() {
         if (null == aboutData) {
@@ -67,7 +66,7 @@ public class AboutData {
     public void downLoadImages(String url, String imageName, Context context) {
         String imageRoot = creatImagePath();
         if (!imageRoot.equals(null)) {
-            String path = imageRoot + "/" + "1997-07-08" + imageName.substring(0, 3) + ".png";
+            String path = imageRoot + "/" + (imageName.substring(0, 4).replace(".", "dot")) + ".png";
             DownLoadImageService.downloadImage(context, path, url);
         } else {
             Toast.makeText(context, context.getString(R.string.down_load_error_message), Toast.LENGTH_SHORT).show();
@@ -128,6 +127,14 @@ public class AboutData {
             return downloadPath;
         }
         return null;
+    }
+
+    /**
+     * 获取默认的图片下载根目录
+     * @return
+     */
+    public static String getDefaultImgPath() {
+        return Environment.getExternalStorageDirectory() + "/Window";
     }
 
 }

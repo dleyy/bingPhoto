@@ -47,7 +47,7 @@ public class NotificationUtil {
             Intent intent = new Intent(context, DownloadListActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     context, 0, intent, FLAG_PENDINGINTENT);
-            notification.contentIntent = pendingIntent;
+//            notification.contentIntent = pendingIntent;
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.notification_view);
             remoteViews.setImageViewResource(R.id.download_image, R.drawable.download);
@@ -85,6 +85,7 @@ public class NotificationUtil {
             if (progress == 100) {
                 notification.contentView.setImageViewResource(R.id.download_image, R.drawable.downloaded);
                 notification.contentView.setTextViewText(R.id.download_title, "下载完成");
+                notification.flags = Notification.FLAG_AUTO_CANCEL;
             }
         } else {
             throw new RuntimeException("for notificationID" + notification + " didn't exit");
