@@ -43,11 +43,11 @@ public class NotificationUtil {
             Notification notification = new Notification();
             notification.when = System.currentTimeMillis();
             //设置点击通知栏自动消失。
-//            notification.flags = Notification.FLAG_AUTO_CANCEL;
+            notification.flags = Notification.FLAG_AUTO_CANCEL;
             Intent intent = new Intent(context, DownloadListActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     context, 0, intent, FLAG_PENDINGINTENT);
-//            notification.contentIntent = pendingIntent;
+            notification.contentIntent = pendingIntent;
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.notification_view);
             remoteViews.setImageViewResource(R.id.download_image, R.drawable.download);

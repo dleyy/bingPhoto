@@ -1,15 +1,18 @@
 package com.dleyy.bingphoto.view.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 
 import com.dleyy.bingphoto.BaseActivity;
 import com.dleyy.bingphoto.R;
 import com.dleyy.bingphoto.databinding.ActivityMainBinding;
+import com.dleyy.bingphoto.view.adapter.DownLoadListAdapter;
 import com.dleyy.bingphoto.view.fragment.HomeFragment;
 import com.dleyy.bingphoto.view.fragment.MineFragment;
 
@@ -52,6 +55,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             }
         };
         viewPager.setAdapter(adapter);
+
     }
 
 
