@@ -44,6 +44,10 @@ public class MineFragment extends Fragment {
         SectorBean sectorBean0 = new SectorBean("test1", 0.3f, "1313", Color.GRAY);
         SectorBean sectorBean1 = new SectorBean("test1", 0.3f, "1313", Color.WHITE);
         SectorBean sectorBean3 = new SectorBean("test1", 0.1f, "1313", Color.BLUE);
+        sectorBean.setSectorName("RED");
+        sectorBean0.setSectorName("GRAY");
+        sectorBean1.setSectorName("WHITE");
+        sectorBean3.setSectorName("BLUE");
         mDates.add(sectorBean);
         mDates.add(sectorBean0);
         mDates.add(sectorBean1);

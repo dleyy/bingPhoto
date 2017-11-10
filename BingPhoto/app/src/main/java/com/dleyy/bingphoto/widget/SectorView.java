@@ -2,13 +2,12 @@ package com.dleyy.bingphoto.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.dleyy.bingphoto.Bean.SectorBean;
 
@@ -26,6 +25,22 @@ public class SectorView extends View {
     private List<SectorBean> mDatas = new ArrayList<>();
     private Paint mpaint;
     private int width, height;
+    private float r;
+
+    /**
+     * 画布，用于保存绘制好的状态
+     */
+    private Canvas canvas;
+
+    /**
+     * SectorView圆心的坐标
+     */
+    private double[] circleCenter = {-1, -1};
+    /**
+     * SectorView的左边距离与顶部距离。
+     */
+    private double viewLeft, viewTop;
+
 
     public SectorView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -53,6 +68,10 @@ public class SectorView extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+
+        //获取到View左距离屏幕左的距离，同理 上
+        viewLeft = getLeft();
+        viewTop = getTop();
     }
 
     @Override
@@ -63,8 +82,10 @@ public class SectorView extends View {
         }
         //将画布坐标原点移动到中心位置
         canvas.translate(width / 2, height / 2);
+        circleCenter[0] = viewLeft + width / 2;
+        circleCenter[1] = viewTop + height / 2;
         //计算半径
-        float r = (float) (Math.min(width, height) / 2 * 0.8);
+        r = (float) (Math.min(width, height) / 2 * 0.8);
         //绘制饼状图区域
         RectF rectF = new RectF(-r, -r, r, r);
 
@@ -77,10 +98,102 @@ public class SectorView extends View {
         }
 
         for (SectorBean bean : mDatas) {
-            Log.e("dddd", "onDraw: " + bean.getColor() + " " + Color.RED
-                    + " " + Color.GREEN + " " + Color.WHITE + " " + Color.BLUE);
             mpaint.setColor(bean.getColor());
             canvas.drawArc(rectF, bean.getStartAngle(), bean.getSweepAngle(), true, mpaint);
+        }
+        this.canvas = canvas;
+        canvas.save();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_UP:
+                double x = event.getX();
+                double y = event.getY();
+                if (isContainerInView(x, y)) {
+                    showAnimation(x, y, mDatas);
+                } else {
+                    return false;
+                }
+                break;
+
+        }
+        return true;
+
+    }
+
+    /**
+     * 动画展示
+     * 1、计算出是否在某块区域内。
+     * 2、执行动画
+     *
+     * @param x      点击点的x坐标
+     * @param y      点击点的y坐标
+     * @param mDatas 数据集合
+     */
+    private void showAnimation(double x, double y, List<SectorBean> mDatas) {
+        double degree = Math.atan((y - circleCenter[1]) / (x - circleCenter[0])) * 180 / Math.PI;
+        //获取基于SectorView原点的坐标值
+        degree = getReallyDegree(degree, x - circleCenter[0], y - circleCenter[1]);
+        for (SectorBean sectorBean : mDatas) {
+            if (degree <= sectorBean.getSweepAngle() + sectorBean.getStartAngle()
+                    && degree >= sectorBean.getStartAngle()) {
+                Log.e(TAG, "There should show animation" + sectorBean.getSectorName());
+                break;
+            }
+        }
+    }
+
+    /**
+     * 放大扇形
+     *
+     * @param bean
+     */
+    private void drawCycle(SectorBean bean) {
+        if (null == mpaint) {
+            initPaint();
+        }
+        mpaint.setColor(bean.getColor());
+        canvas.translate(width / 2, height / 2);
+        //计算半径
+        r = (float) (Math.min(width, height) / 2);
+        //绘制饼状图区域
+        RectF rectF = new RectF(-r, -r, r, r);
+        canvas.drawArc(rectF, bean.getStartAngle(), bean.getSweepAngle(), true, mpaint);
+    }
+
+    /**
+     * 根据坐标点计算出具体的角度值（0-360），因为以前是-Π-Π；
+     *
+     * @param degree -Π-Π的角度值
+     * @param x      点的x坐标
+     * @param y      点的y坐标
+     * @return 0-360的角度值
+     */
+    private double getReallyDegree(double degree, double x, double y) {
+        double reallyDegree = 0d;
+        if (x < 0) {
+            reallyDegree = degree + 180;
+            return reallyDegree;
+        } else if (y < 0) {
+            reallyDegree = 360 + degree;
+            return reallyDegree;
+        } else {
+            return degree;
+        }
+    }
+
+    //判断手势是否在View内部
+    private boolean isContainerInView(double x, double y) {
+        double length = Math.sqrt((x - circleCenter[0]) * (x - circleCenter[0])
+                + (y - circleCenter[1]) * (y - circleCenter[1]));
+        if (length < r) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -105,6 +218,10 @@ public class SectorView extends View {
             nowAngle += bean.getSweepAngle();
 
         }
+    }
+
+    private void drawSectorView() {
+
     }
 
     /**

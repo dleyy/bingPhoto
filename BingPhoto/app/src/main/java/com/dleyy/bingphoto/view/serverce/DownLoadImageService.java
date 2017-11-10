@@ -108,12 +108,17 @@ public class DownLoadImageService extends IntentService {
                 InputStream inputStream = response.body().byteStream();
                 FileOutputStream fileOutputStream = null;
                 fileOutputStream = new FileOutputStream(path);
+                long total = response.body().contentLength();
+                long sum = 0l;
                 byte[] buffer = new byte[2048];
                 int length = 0;
                 while ((length = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, length);
+                    sum += length;
+                    Log.e(TAG, "onResponse: " + total + "  " + sum + "  " + (sum*100 / total));
                 }
                 fileOutputStream.flush();
+                fileOutputStream.close();
             }
         });
 
