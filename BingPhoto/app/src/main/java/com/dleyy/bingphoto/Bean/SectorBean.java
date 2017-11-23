@@ -5,6 +5,10 @@ package com.dleyy.bingphoto.Bean;
  */
 public class SectorBean {
 
+    private float pointX = 0f;
+
+    private float pointY = 0f;
+
     /**
      * 区域名
      */
@@ -94,5 +98,21 @@ public class SectorBean {
 
     public void setStartAngle(float startAngle) {
         this.startAngle = startAngle;
+    }
+
+    public float getPointX() {
+        return pointX;
+    }
+
+    public void setPointX(float pointX) {
+        this.pointX = pointX;
+    }
+
+    public float getPointY() {
+        return pointY;
+    }
+
+    public void setPointY(float pointY) {
+        this.pointY = pointY;
     }
 }

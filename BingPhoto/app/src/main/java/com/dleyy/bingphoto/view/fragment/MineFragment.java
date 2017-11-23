@@ -4,9 +4,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 
 import com.dleyy.bingphoto.Bean.SectorBean;
 import com.dleyy.bingphoto.R;
@@ -20,14 +24,20 @@ import java.util.List;
  */
 public class MineFragment extends Fragment {
 
+    private static String TAG = "MineFragment";
+
     private SectorView sectorView;
     private List<SectorBean> mDates;
+    private Button animationButton;
+    private Button scaleButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mine, container, false);
         sectorView = (SectorView) v.findViewById(R.id.mySector);
+        animationButton = (Button) v.findViewById(R.id.trans);
+        scaleButton = (Button) v.findViewById(R.id.scan);
         return v;
     }
 
@@ -39,6 +49,10 @@ public class MineFragment extends Fragment {
     }
 
     public void initDatas() {
+
+        final Animation animation = AnimationUtils.loadAnimation(
+                getActivity(), R.anim.translate_animation);
+
         mDates = new ArrayList<>();
         SectorBean sectorBean = new SectorBean("test1", 0.3f, "1313", Color.RED);
         SectorBean sectorBean0 = new SectorBean("test1", 0.3f, "1313", Color.GRAY);
@@ -54,5 +68,27 @@ public class MineFragment extends Fragment {
         mDates.add(sectorBean3);
         sectorView.setDatas(mDates);
 
+        sectorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "onClick: clicked");
+                sectorView.startAnimation(animation);
+            }
+        });
+
+        animationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sectorView.startAnimation(animation);
+            }
+        });
+
+        scaleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sectorView.startAnimation(AnimationUtils.loadAnimation
+                        (getActivity(), R.anim.scale_animation));
+            }
+        });
     }
 }

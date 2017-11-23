@@ -25,7 +25,7 @@ public class SectorView extends View {
     private List<SectorBean> mDatas = new ArrayList<>();
     private Paint mpaint;
     private int width, height;
-    private float r;
+    private float r = 0f;
 
     /**
      * 画布，用于保存绘制好的状态
@@ -40,6 +40,8 @@ public class SectorView extends View {
      * SectorView的左边距离与顶部距离。
      */
     private double viewLeft, viewTop;
+
+    private OnClickListener listener;
 
 
     public SectorView(Context context, AttributeSet attrs) {
@@ -85,7 +87,9 @@ public class SectorView extends View {
         circleCenter[0] = viewLeft + width / 2;
         circleCenter[1] = viewTop + height / 2;
         //计算半径
+
         r = (float) (Math.min(width, height) / 2 * 0.8);
+
         //绘制饼状图区域
         RectF rectF = new RectF(-r, -r, r, r);
 
@@ -98,19 +102,24 @@ public class SectorView extends View {
         }
 
         for (SectorBean bean : mDatas) {
+            canvas.save();
+            canvas.translate(bean.getPointX(), bean.getPointY());
             mpaint.setColor(bean.getColor());
             canvas.drawArc(rectF, bean.getStartAngle(), bean.getSweepAngle(), true, mpaint);
+            canvas.restore();
         }
         this.canvas = canvas;
         canvas.save();
+    }
+
+    public void setOnClickListener(OnClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_UP:
                 double x = event.getX();
                 double y = event.getY();
                 if (isContainerInView(x, y)) {
@@ -119,10 +128,11 @@ public class SectorView extends View {
                     return false;
                 }
                 break;
-
+            case MotionEvent.ACTION_UP:
+                canvas.restore();
+                break;
         }
-        return true;
-
+        return super.onTouchEvent(event);
     }
 
     /**
@@ -138,11 +148,43 @@ public class SectorView extends View {
         double degree = Math.atan((y - circleCenter[1]) / (x - circleCenter[0])) * 180 / Math.PI;
         //获取基于SectorView原点的坐标值
         degree = getReallyDegree(degree, x - circleCenter[0], y - circleCenter[1]);
+        float startAngle = 0f;
         for (SectorBean sectorBean : mDatas) {
+            startAngle += sectorBean.getSweepAngle() / 2;
             if (degree <= sectorBean.getSweepAngle() + sectorBean.getStartAngle()
                     && degree >= sectorBean.getStartAngle()) {
-                Log.e(TAG, "There should show animation" + sectorBean.getSectorName());
+//                Log.e(TAG, "There should show animation" + sectorBean.getSectorName());
+                float moveX = 0f;
+                float moveY = 0f;
+                if (startAngle < 90) {
+                    moveX = 15f;
+                    moveY = 15f;
+                } else if (startAngle == 90) {
+                    moveX = 0f;
+                    moveY = 15f;
+                } else if (startAngle > 90 && startAngle < 180) {
+                    moveX = -15f;
+                    moveY = 15f;
+                } else if (startAngle == 180) {
+                    moveY = 0;
+                    moveX = -15f;
+                } else if (startAngle > 180 && startAngle < 270) {
+                    moveX = -15f;
+                    moveY = -15f;
+                } else if (startAngle == 270) {
+                    moveX = 0f;
+                    moveY = -15f;
+                } else {
+                    moveX = 15f;
+                    moveY = -15f;
+                }
+
+                sectorBean.setPointX(moveX);
+                sectorBean.setPointY(moveY);
+                invalidate();
                 break;
+
+
             }
         }
     }
