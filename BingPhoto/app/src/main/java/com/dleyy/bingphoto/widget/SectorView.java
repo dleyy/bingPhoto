@@ -154,30 +154,10 @@ public class SectorView extends View {
             if (degree <= sectorBean.getSweepAngle() + sectorBean.getStartAngle()
                     && degree >= sectorBean.getStartAngle()) {
 //                Log.e(TAG, "There should show animation" + sectorBean.getSectorName());
-                float moveX = 0f;
-                float moveY = 0f;
-                if (startAngle < 90) {
-                    moveX = 15f;
-                    moveY = 15f;
-                } else if (startAngle == 90) {
-                    moveX = 0f;
-                    moveY = 15f;
-                } else if (startAngle > 90 && startAngle < 180) {
-                    moveX = -15f;
-                    moveY = 15f;
-                } else if (startAngle == 180) {
-                    moveY = 0;
-                    moveX = -15f;
-                } else if (startAngle > 180 && startAngle < 270) {
-                    moveX = -15f;
-                    moveY = -15f;
-                } else if (startAngle == 270) {
-                    moveX = 0f;
-                    moveY = -15f;
-                } else {
-                    moveX = 15f;
-                    moveY = -15f;
-                }
+                float moveX = (float) (15f *
+                        Math.cos(sectorBean.getCenterAngle() / 180 * Math.PI));
+                float moveY = (float) (15f *
+                        Math.sin(sectorBean.getCenterAngle() / 180 * Math.PI));
 
                 sectorBean.setPointX(moveX);
                 sectorBean.setPointY(moveY);
@@ -258,7 +238,7 @@ public class SectorView extends View {
             bean.setStartAngle(nowAngle);
             bean.setSweepAngle(ALL_DEGREE * bean.getPercentage());
             nowAngle += bean.getSweepAngle();
-
+            bean.setCenterAngle(bean.getStartAngle() + bean.getSweepAngle() / 2);
         }
     }
 

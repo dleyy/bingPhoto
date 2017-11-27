@@ -39,6 +39,8 @@ public class SectorBean {
      */
     private float startAngle;
 
+    private float centerAngle;
+
 
     public SectorBean(String sectorName, float percentage) {
         this.sectorName = sectorName;
@@ -114,5 +116,13 @@ public class SectorBean {
 
     public void setPointY(float pointY) {
         this.pointY = pointY;
+    }
+
+    public float getCenterAngle() {
+        return centerAngle;
+    }
+
+    public void setCenterAngle(float centerAngle) {
+        this.centerAngle = centerAngle;
     }
 }

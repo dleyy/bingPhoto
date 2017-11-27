@@ -13,12 +13,14 @@
         android:id="@+id/trans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp" />
+        android:layout_margin="50dp"
+        android:text="trans" />
 
     <Button
         android:id="@+id/scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp" />
+        android:layout_margin="30dp"
+        android:text="scan" />
 
 </LinearLayout>

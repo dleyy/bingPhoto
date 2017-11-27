@@ -19,4 +19,8 @@ public class BingResponse extends BaseApiResponse<BingBean> {
         super(context);
     }
 
+    public Boolean isResourceExist(){
+        return getResCode()==0;
+    }
+
 }
