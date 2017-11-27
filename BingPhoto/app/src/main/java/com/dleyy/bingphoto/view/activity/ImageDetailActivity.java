@@ -19,7 +19,9 @@ import com.dleyy.bingphoto.Utils.AboutData;
 import com.dleyy.bingphoto.databinding.ActivityImageBinding;
 import com.dleyy.bingphoto.view.adapter.MyPagerAdapter;
 import com.dleyy.bingphoto.view.fragment.HomeFragment;
+import com.dleyy.bingphoto.view.serverce.DownLoadImageService;
 import com.dleyy.bingphoto.viewmodel.ImageActivityViewModel;
+import com.dleyy.data.bean.BingBean;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,14 +38,8 @@ public class ImageDetailActivity extends BaseActivity<ActivityImageBinding> {
     private String TAG = "ImageDetailActivity";
 
     private ImageActivityViewModel viewModel;
-    /**
-     * 本机分辨率
-     */
-    private ArrayList<String> myPhoneList;
-    /**
-     * 必应图片信息
-     */
-    private String photoString;
+
+    private ArrayList<BingBean.ListBean> imageList;
 
     private ViewPager viewPager;
     private PagerAdapter adapter;
@@ -62,47 +58,57 @@ public class ImageDetailActivity extends BaseActivity<ActivityImageBinding> {
     @Override
     protected void initViews() {
         aboutData = new AboutData();
-        viewModel = new ImageActivityViewModel();
-        Bundle bd = getIntent().getBundleExtra(Contants.KEY_INTENT_BUNDLE);
-        myPhoneList = bd.getStringArrayList(Contants.KEY_PHONE_DISMITION);
-        photoString = bd.getString(Contants.KEY_BING_LIST);
+        viewModel = new ImageActivityViewModel(this);
+        binding.setViewModel(viewModel);
+        imageList = getIntent().getParcelableArrayListExtra(Contants.KEY_BING_LIST);
         viewPager = getBinding().imagePager;
-        setImageBean(photoString);
+        setImageBean(imageList);
         adapter = new MyPagerAdapter(this, list);
+        viewModel.setImageInfo(0, list.size(),
+                list.get(0));
         viewPager.setAdapter(adapter);
+        getBinding().download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.imageDownload();
+            }
+        });
+
+        getBinding().backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                viewModel.setImageInfo(position, list.size(),
+                        list.get(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
-    private void setImageBean(String jsonArray) {
-        try {
-            JSONArray array = new JSONArray(jsonArray);
-            if (array.length() > 0) {
-                for (int j = 0; j < array.length(); j++) {
-                    JSONObject object = array.getJSONObject(j);
-                    String defaultImage = object.optString("800x600");
-                    String nowPhoneImage = null;
-                    String nowKey = null;
-                    for (int i = 0; i < myPhoneList.size(); i++) {
-                        if (!object.optString(myPhoneList.get(i)).isEmpty()) {
-                            nowPhoneImage = object.optString(myPhoneList.get(i));
-                            nowKey = myPhoneList.get(i);
-                            break;
-                        }
-                    }
-                    nowPhoneImage = aboutData.getCorrectPhoneImage(nowPhoneImage, nowKey);
-                    BingPhoto photo = new BingPhoto();
-                    photo.setTitle(object.optString("title"));
-                    photo.setContent(object.optString("content"));
-                    photo.setImageUrl(nowPhoneImage == null ? defaultImage : nowPhoneImage);
-                    Log.d(TAG, "setImageBean:" + photo.toString());
-                    list.add(photo);
-                }
-            } else {
-                list = null;
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "initImages: " + e.getMessage());
-            e.printStackTrace();
+    private void setImageBean(ArrayList<BingBean.ListBean> listBeen) {
+
+        for (int i = 0; i < listBeen.size(); i++) {
+            BingPhoto photo = new BingPhoto();
+            photo.setTitle(listBeen.get(i).getTitle());
+            photo.setContent(listBeen.get(i).getContent());
+            photo.setImageUrl(listBeen.get(i).get_$720x1280());
+            list.add(photo);
         }
     }
 

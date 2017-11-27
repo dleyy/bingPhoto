@@ -1,6 +1,7 @@
 package com.dleyy.data.request;
 
 import com.dleyy.data.ApiList;
+import com.dleyy.data.bean.BingBean;
 import com.dleyy.data.net.DefaultObserver;
 
 

@@ -3,6 +3,7 @@ package com.dleyy.bingphoto.view.fragment;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
@@ -19,9 +20,13 @@ import com.dleyy.bingphoto.Utils.AboutData;
 import com.dleyy.bingphoto.databinding.FragmentHomeBinding;
 import com.dleyy.bingphoto.view.activity.ImageDetailActivity;
 import com.dleyy.bingphoto.viewmodel.HomeFragmentViewModel;
+import com.dleyy.data.Exception.ExceptionHandler;
+import com.dleyy.data.bean.BingBean;
 import com.dleyy.data.net.DefaultObserver;
 import com.dleyy.data.request.BingRequest;
+import com.dleyy.data.response.BaseApiResponse;
 import com.dleyy.data.response.BingResponse;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,19 +47,17 @@ public class HomeFragment extends Fragment {
     private HomeFragmentViewModel viewModel;
     private BingResponse response;
     private BingRequest request;
-    private ArrayList<String> myPhoneList;
     private AboutData aboutData;
-    private Bundle bd;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         viewModel = new HomeFragmentViewModel();
-        response = new BingResponse();
+        response = new BingResponse(getActivity());
         request = new BingRequest();
-        bd = getArguments();
-        myPhoneList = bd.getStringArrayList(Contants.KEY_PHONE_DISMITION);
+
         aboutData = AboutData.getInstance();
         return binding.getRoot();
     }
@@ -75,8 +78,10 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Intent in = new Intent();
-                        bd.putString(Contants.KEY_BING_LIST, response.getResult());
-                        in.putExtra(Contants.KEY_INTENT_BUNDLE, bd);
+
+                        in.putParcelableArrayListExtra(Contants.KEY_BING_LIST,
+                                response.getResBody().getList());
+
                         in.setClass(getActivity(), ImageDetailActivity.class);
                         startActivity(in);
                     }
@@ -85,45 +90,33 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError:" + e.getMessage());
+                ExceptionHandler.getInstance(getActivity())
+                        .handleException(e.getMessage());
             }
 
             @Override
             public void onNext(String s) {
-                response.setResult(aboutData.getList(s));
-                ShowImage(response.getResult());
+
+                Gson gson = new Gson();
+                response = gson.fromJson(s, BingResponse.class);
+
+                if (response.isPostSuccess()) {
+                    ShowImage(response.getResBody().getList());
+                }
             }
         });
     }
 
-    private void ShowImage(String jsonArray) {
-        try {
-            JSONArray array = new JSONArray(jsonArray);
-            if (array.length() > 0) {
-                JSONObject object = array.getJSONObject(0);
-                Log.e(TAG, "ShowImage: JSONOBject" + object.toString());
-                String defaultImage = object.optString("800x600");
-                String nowPhoneImage = null;
-                String nowKey = null;
-                for (int i = 0; i < myPhoneList.size(); i++) {
-                    if (!object.optString(myPhoneList.get(i)).isEmpty()) {
-                        nowPhoneImage = object.optString(myPhoneList.get(i));
-                        nowKey = myPhoneList.get(i);
-                        break;
-                    }
-                }
-                nowPhoneImage = aboutData.getCorrectPhoneImage(nowPhoneImage, nowKey);
-                Log.e(TAG, "initImages:33" + nowPhoneImage.isEmpty());
-                Log.e(TAG, "initImages:11" + nowPhoneImage + "  " + defaultImage);
-                if (!nowPhoneImage.isEmpty()) {
-                    binding.bingPhoto.setImageURI(nowPhoneImage);
-                } else {
-                    binding.bingPhoto.setImageURI(defaultImage);
-                }
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "initImages: " + e.getMessage());
-            e.printStackTrace();
+    private void ShowImage(List<BingBean.ListBean> listBeen) {
+
+        String defaultImage = listBeen.get(0).get_$800x600();
+        String nowPhoneImage = listBeen.get(0).get_$_19201080197();
+        nowPhoneImage = nowPhoneImage.replace('*', 'x');
+
+        if (!nowPhoneImage.isEmpty()) {
+            binding.bingPhoto.setImageURI(nowPhoneImage);
+        } else {
+            binding.bingPhoto.setImageURI(defaultImage);
         }
     }
 

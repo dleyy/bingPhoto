@@ -45,30 +45,12 @@ public class MyPagerAdapter extends PagerAdapter {
             Button download;
             View v = LayoutInflater.from(context).inflate(R.layout.item_image, null, false);
 
-            download = (Button) v.findViewById(R.id.download);
             imageView = (SimpleDraweeView) v.findViewById(R.id.item_image);
-            title = (TextView) v.findViewById(R.id.title);
-            content = (TextView) v.findViewById(R.id.image_info_content);
-            back = (ImageView) v.findViewById(R.id.back_btn);
 
-            back.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((Activity) context).finish();
-                }
-            });
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             imageView.setImageURI(list.get(i).getImageUrl());
-            title.setText((i + 1) + "/" + list.size());
-            content.setText(list.get(i).getTitle());
 
             final int position = i;
-            download.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    aboutData.downLoadImages(list.get(position).getImageUrl(), list.get(position).getTitle(), context);
-                }
-            });
 
             imageViews.add(v);
         }

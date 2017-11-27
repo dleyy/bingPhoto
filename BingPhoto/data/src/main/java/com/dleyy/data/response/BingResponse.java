@@ -2,20 +2,21 @@ package com.dleyy.data.response;
 
 import android.content.Context;
 
+import com.dleyy.data.bean.BingBean;
+
+import java.util.List;
+
 import javax.security.auth.callback.Callback;
 
 /**
  * Created by dleyy on 2017/9/26.
  */
-public class BingResponse extends BaseApiResponse {
+public class BingResponse extends BaseApiResponse<BingBean> {
 
-    @Override
-    public void setResult(String requestResult) {
-        super.setResult(requestResult);
+    private BingBean bean;
+
+    public BingResponse(Context context) {
+        super(context);
     }
 
-    @Override
-    public String getResult() {
-        return result;
-    }
 }
