@@ -142,7 +142,6 @@ public class SectorView extends View {
                 if (isContainerInView(x, y)) {
                     showAnimation(x, y, mDatas);
                 }
-                canvas.restore();
                 break;
         }
         return true;
