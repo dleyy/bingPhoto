@@ -35,10 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_image_height"
             fresco:failureImage="@drawable/ic_load_img_fail"
-            fresco:progressBarImage="@drawable/icon_progress_bar"
-            fresco:progressBarImageScaleType="centerInside"
+            fresco:placeholderImage="@drawable/none_image"
             fresco:progressBarAutoRotateInterval="5000"
-            fresco:placeholderImage="@drawable/none_image" />
+            fresco:progressBarImage="@drawable/icon_progress_bar"
+            fresco:progressBarImageScaleType="centerInside" />
 
     </LinearLayout>
 </layout>

@@ -9,9 +9,9 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/item_image"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_height="@dimen/image_list_item_height"
+        android:layout_marginBottom="@dimen/image_list_margin_vertical"
+        android:layout_marginTop="@dimen/image_list_margin_vertical"
         fresco:failureImage="@drawable/ic_load_img_fail"
         fresco:placeholderImage="@drawable/none_image"
         fresco:progressBarAutoRotateInterval="5000"

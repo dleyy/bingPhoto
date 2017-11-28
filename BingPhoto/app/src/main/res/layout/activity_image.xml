@@ -29,8 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:paddingLeft="17dp"
-                android:paddingRight="17dp"
+                android:paddingLeft="@dimen/image_info_title_padding"
+                android:paddingRight="@dimen/image_info_title_padding"
                 android:src="@drawable/ic_bck" />
 
             <TextView
@@ -44,7 +44,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1px"
+                android:layout_height="@dimen/space_line_height"
                 android:layout_alignParentBottom="true"
                 android:background="#7d828f" />
         </RelativeLayout>
@@ -57,11 +57,12 @@
 
         </android.support.v4.view.ViewPager>
 
-
         <TextView
             android:id="@+id/image_info_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/image_info_text_marginVertical"
+            android:layout_marginTop="@dimen/image_info_text_marginVertical"
             android:gravity="center"
             android:text="@{ViewModel.nowText}"
             android:textSize="@dimen/title_bar_txt_size" />
@@ -71,7 +72,6 @@
             style="@style/blueBtn"
             android:layout_marginBottom="@dimen/download_button_margin_bottom"
             android:text="@string/download" />
-
 
     </LinearLayout>
 </layout>

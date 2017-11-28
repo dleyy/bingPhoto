@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="horizontal">
 
     <ProgressBar
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:indeterminate="false"/>
+        android:layout_width="@dimen/view_more_height"
+        android:layout_height="@dimen/view_more_height"
+        android:indeterminate="false" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_more_txt"/>
+        android:text="@string/view_more_txt" />
 
 </LinearLayout>

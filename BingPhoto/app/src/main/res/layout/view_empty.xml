@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:drawablePadding="@dimen/view_empty_drawable_padding"
         android:drawableTop="@drawable/no_record"
-        android:drawablePadding="12dp"
         android:text="@string/view_empty_txt" />
 </RelativeLayout>

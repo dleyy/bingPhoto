@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/download_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/notification_height"
+        android:layout_height="@dimen/notification_height"
         android:src="@drawable/download" />
 
     <LinearLayout
@@ -27,11 +27,10 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="100"
-            style="?android:attr/progressBarStyleHorizontal"
-            />
+            android:max="100" />
 
     </LinearLayout>
 
