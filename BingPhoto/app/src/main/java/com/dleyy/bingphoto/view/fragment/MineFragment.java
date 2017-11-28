@@ -1,5 +1,6 @@
 package com.dleyy.bingphoto.view.fragment;
 
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -72,7 +73,9 @@ public class MineFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.e(TAG, "onClick: clicked");
-                sectorView.startAnimation(animation);
+                ObjectAnimator animator = ObjectAnimator.ofFloat(v,"popLength",0,30);
+                animator.setDuration(1999);
+                animator.start();
             }
         });
 

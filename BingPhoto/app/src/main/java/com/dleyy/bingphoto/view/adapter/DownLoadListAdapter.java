@@ -1,22 +1,15 @@
 package com.dleyy.bingphoto.view.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.dleyy.bingphoto.Bean.DownloadedImage;
 import com.dleyy.bingphoto.R;
-import com.dleyy.bingphoto.Utils.LoadImage;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
-import java.io.File;
 
 /**
  * Created by dleyy on 2017/10/25.
@@ -29,7 +22,6 @@ public class DownLoadListAdapter extends RecyclerArrayAdapter<DownloadedImage> {
         super(context);
         this.context = context;
     }
-
 
     @Override
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {

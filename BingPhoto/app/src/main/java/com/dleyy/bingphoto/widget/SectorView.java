@@ -1,5 +1,6 @@
 package com.dleyy.bingphoto.widget;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -26,6 +27,10 @@ public class SectorView extends View {
     private Paint mpaint;
     private int width, height;
     private float r = 0f;
+
+    private float popLength = 0f;
+
+    private String nowClickPrecent = null;
 
     /**
      * 画布，用于保存绘制好的状态
@@ -103,6 +108,16 @@ public class SectorView extends View {
 
         for (SectorBean bean : mDatas) {
             canvas.save();
+            //如果是选中的View，那么就设置偏移量。
+            if (bean.getSectorName().equals(nowClickPrecent)){
+                float moveX = (float) (popLength *
+                        Math.cos(bean.getCenterAngle() / 180 * Math.PI));
+                float moveY = (float) (popLength *
+                        Math.sin(bean.getCenterAngle() / 180 * Math.PI));
+
+                bean.setPointX(moveX);
+                bean.setPointY(moveY);
+            }
             canvas.translate(bean.getPointX(), bean.getPointY());
             mpaint.setColor(bean.getColor());
             canvas.drawArc(rectF, bean.getStartAngle(), bean.getSweepAngle(), true, mpaint);
@@ -120,19 +135,17 @@ public class SectorView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_UP:
                 double x = event.getX();
                 double y = event.getY();
                 if (isContainerInView(x, y)) {
                     showAnimation(x, y, mDatas);
-                } else {
-                    return false;
                 }
-                break;
-            case MotionEvent.ACTION_UP:
                 canvas.restore();
                 break;
         }
-        return super.onTouchEvent(event);
+        return true;
     }
 
     /**
@@ -154,37 +167,22 @@ public class SectorView extends View {
             if (degree <= sectorBean.getSweepAngle() + sectorBean.getStartAngle()
                     && degree >= sectorBean.getStartAngle()) {
 //                Log.e(TAG, "There should show animation" + sectorBean.getSectorName());
-                float moveX = (float) (15f *
-                        Math.cos(sectorBean.getCenterAngle() / 180 * Math.PI));
-                float moveY = (float) (15f *
-                        Math.sin(sectorBean.getCenterAngle() / 180 * Math.PI));
 
-                sectorBean.setPointX(moveX);
-                sectorBean.setPointY(moveY);
-                invalidate();
-                break;
-
-
+//                float moveX = (float) (popLength *
+//                        Math.cos(sectorBean.getCenterAngle() / 180 * Math.PI));
+//                float moveY = (float) (popLength *
+//                        Math.sin(sectorBean.getCenterAngle() / 180 * Math.PI));
+//
+//                sectorBean.setPointX(moveX);
+//                sectorBean.setPointY(moveY);
+//                invalidate();
+//                break;
+                nowClickPrecent = sectorBean.getSectorName();
+                if (null!=listener) {
+                    listener.onClick(SectorView.this);
+                }
             }
         }
-    }
-
-    /**
-     * 放大扇形
-     *
-     * @param bean
-     */
-    private void drawCycle(SectorBean bean) {
-        if (null == mpaint) {
-            initPaint();
-        }
-        mpaint.setColor(bean.getColor());
-        canvas.translate(width / 2, height / 2);
-        //计算半径
-        r = (float) (Math.min(width, height) / 2);
-        //绘制饼状图区域
-        RectF rectF = new RectF(-r, -r, r, r);
-        canvas.drawArc(rectF, bean.getStartAngle(), bean.getSweepAngle(), true, mpaint);
     }
 
     /**
@@ -264,5 +262,14 @@ public class SectorView extends View {
 
     public List<SectorBean> getDatas() {
         return mDatas;
+    }
+
+    public float getPopLength() {
+        return popLength;
+    }
+
+    public void setPopLength(float popLength) {
+        this.popLength = popLength;
+        invalidate();
     }
 }

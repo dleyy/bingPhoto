@@ -8,6 +8,10 @@
         android:id="@+id/mySector"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sector_height" />
+    
+    <com.dleyy.bingphoto.widget.MyTestView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/trans"
